@@ -1,6 +1,6 @@
 .output "clock.go"
 .ignorecase = 0
-package main
+package clockgsl
 import (
   "time"
   "fmt"
@@ -74,11 +74,6 @@ func (self thesupplier) FractionOfDayPassed() float64 {
 	return float64(self.clock.Sub(midnight).Nanoseconds()) / nanoSecondsPerDay
 }
 
-func main() {
-	fmt.Println(GetAllAsString())
-}
-
-
 func GetAllAsString() string {
     out := ""
 .for clock
@@ -98,3 +93,59 @@ func GetAllAsJSON() string {
 .endfor
 )
 }
+
+.output "clock_test.go"
+package clockgsl
+import (
+  "strings"
+  "strconv"
+  "testing"
+  "fmt"
+)
+
+func timeToDayFraction(timestamp string) (float64, error) {
+	timesplit := strings.Split(timestamp, ":")
+	if len(timesplit) != 3 {
+		return 0.0, fmt.Errorf("Time needs to be in format HH:MM:SS but was %s", timestamp)
+	}
+	hours, err := strconv.Atoi(timesplit[0])
+	if err != nil {
+		return 0.0, fmt.Errorf("Time needs to be in format HH:MM:SS but was %s", timestamp)
+	}
+	mins, err := strconv.Atoi(timesplit[1])
+	if err != nil {
+		return 0.0, fmt.Errorf("Time needs to be in format HH:MM:SS but was %s", timestamp)
+	}
+	secs, err := strconv.Atoi(timesplit[2])
+	if err != nil {
+		return 0.0, fmt.Errorf("Time needs to be in format HH:MM:SS but was %s", timestamp)
+	}
+	secondsSinceMidnight := float64(hours * 60 * 60 + mins * 60 + secs)
+	return secondsSinceMidnight / float64(1.0 * 24 * 60 * 60), nil
+}
+
+.for clock
+func Test$(name:neat)(t *testing.T) {
+	testdata := []struct {
+		in string
+		out string
+	}{
+.for tests
+.for test
+		{ "$(attime)", "$(expect)" },
+.endfor
+.endfor
+	}
+        for _, tt := range testdata {
+                fraction, err := timeToDayFraction(tt.in)
+				if err != nil {
+                        t.Errorf("Error: %s", err)
+				}
+                s := get$(name:neat)(fraction)
+                if s != tt.out {
+                        t.Errorf("%q => %q, want %q (fraction: %q)", tt.in, s, tt.out, fraction)
+                }
+        }
+
+}
+.endfor

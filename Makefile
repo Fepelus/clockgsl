@@ -1,13 +1,10 @@
-.PHONY: clean, run
+.PHONY: clean, test
 
-clock: clock.go
-	go build $<
+test: clock_test.go clock.go
+	go test
 
-clock.go: model.xml modelToGo.gsl
+%.go: model.xml modelToGo.gsl
 	gsl $<
 
 clean:
-	rm clock.go clock
-
-run: clock
-	./clock
+	rm clock.go clock_test.go clock

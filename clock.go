@@ -1,4 +1,4 @@
-package main
+package clockgsl
 import (
   "time"
   "fmt"
@@ -98,11 +98,6 @@ func (self thesupplier) FractionOfDayPassed() float64 {
 	return float64(self.clock.Sub(midnight).Nanoseconds()) / nanoSecondsPerDay
 }
 
-func main() {
-	fmt.Println(GetAllAsString())
-}
-
-
 func GetAllAsString() string {
     out := ""
 	out = out + fmt.Sprintln(getLocaltime(localSupplier().FractionOfDayPassed()))
@@ -118,3 +113,4 @@ func GetAllAsString() string {
 func GetAllAsJSON() string {
 	return fmt.Sprintf(`{"localTime":"%s","localDate":"%s","utc":"%s","beatTime":"%s","hexTime":"%s","bells":"%s","watch":"%s",}`, getLocaltime(localSupplier().FractionOfDayPassed()), getLocaldate(localSupplier().FractionOfDayPassed()), getUtc(utcSupplier().FractionOfDayPassed()), getBeattime(bmtSupplier().FractionOfDayPassed()), getHextime(localSupplier().FractionOfDayPassed()), getBells(localSupplier().FractionOfDayPassed()), getWatch(localSupplier().FractionOfDayPassed()))
 }
+
