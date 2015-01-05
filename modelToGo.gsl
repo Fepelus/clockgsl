@@ -1,0 +1,100 @@
+.output "clock.go"
+.ignorecase = 0
+package main
+import (
+  "time"
+  "fmt"
+  "math"
+)
+
+type supplier interface {
+	FractionOfDayPassed() float64
+}
+
+.for clock
+func get$(name:neat)(fractionOfDayPassed float64) string {
+. printvars = ""
+. for field
+. printvars = printvars + ", $(name)"
+    $(name) := time.Now().$(name)()
+. endfor
+. for digit
+. printvars = printvars + ", $(name)"
+    $(name)collection := []string{\
+. for element
+"$(element)",\
+. endfor
+    }
+    $(name)idx := int(math.Mod(math.Floor((fractionOfDayPassed) / (1.0 * $(dayfraction))),float64(len($(name)collection))))
+    $(name) := $(name)collection[$(name)idx]
+. endfor
+. for outputfield
+	$(name) := get$(type:neat)OutputElement(fractionOfDayPassed, 1.0 * $(dayfraction))
+. printvars = printvars + ", $(name)"
+. endfor
+    return fmt.Sprintf("$(printf)" $(printvars))
+}
+.endfor
+
+.for outputtypes
+.for type
+func get$(name:neat)OutputElement(fractionOfDayPassed float64, dayFraction float64) string {
+    collection := []string{\
+. for element
+"$(element)",\
+. endfor
+}
+    idx := int(math.Mod(math.Floor((fractionOfDayPassed) / dayFraction),float64(len(collection))))
+    return collection[idx]
+}
+.endfor
+.endfor
+
+.for timezones
+.for.timezone
+func $(name)Supplier() supplier {
+. if "$(isSystemDefault?"false")" = "true"
+	return thesupplier { time.Now() }
+. else
+	location := time.FixedZone("$(name)", $(offset) * 60 * 60)
+	return thesupplier{ time.Now().In(location) }
+. endif
+}
+.endfor
+.endfor
+
+
+type thesupplier struct {
+	clock time.Time
+}
+func (self thesupplier) FractionOfDayPassed() float64 {
+	nanoSecondsPerDay := float64(24 * 60 * 60 * 1000 * 1000 * 1000)
+	round := self.clock.Round(time.Nanosecond)
+	midnight := round.Add(-time.Duration(round.Hour()) * time.Hour).Add(-time.Duration(round.Minute()) * time.Minute).Add(-time.Duration(round.Second()) * time.Second).Add(-time.Duration(round.Nanosecond()) * time.Nanosecond)
+	return float64(self.clock.Sub(midnight).Nanoseconds()) / nanoSecondsPerDay
+}
+
+func main() {
+	fmt.Println(GetAllAsString())
+}
+
+
+func GetAllAsString() string {
+    out := ""
+.for clock
+	out = out + fmt.Sprintln(get$(name:neat)($(timezone)Supplier().FractionOfDayPassed()))
+.endfor
+    return out
+}
+
+func GetAllAsJSON() string {
+	return fmt.Sprintf(`{\
+.for clock
+"$(name)":"%s",\
+.endfor
+}`\
+.for clock
+, get$(name:neat)($(timezone)Supplier().FractionOfDayPassed())\
+.endfor
+)
+}
