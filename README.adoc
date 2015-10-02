@@ -1,4 +1,35 @@
 = Clocks
 
-Show the current time in various formats
+Show the current time in various formats.
+
+
+== Discussion
+
+Many years ago I wrote a trivial little widget that gave the time in various
+formats.  I have rewritten it several times over the years: I did a literate
+programming version in java, for example. When I saw Pieter Hintjens' beautiful
+`gsl` tool I wanted to try it out. Rewriting my clock again seemed a quick,
+little project.
+
+== Prerequisites
+
+1.  https://golang.org/[go]
+2.  https://github.com/imatix/gsl[gsl]
+3.  http://www.tcl.tk/software/tcltk/8.0.html[tk]
+
+== What you get
+
+The `model.xml` file is the meat of the project. It describes how a day is
+divided into so many seconds for each particular clock and how each division
+is formatted.
+
+The `modelToGo.gsl` files converts this model into go when you run it with
+`gsl` (or you get the `Makefile` to run it for you). The generated files are
+here in the repository (`clock.go` and `clock_test.go`) It is all pretty
+straight-forward.
+
+There is a CLI executable that just reads the library and prints and there
+is also a server executable that I run on my workstation -- I have a tk
+client (`client/clockwisher`) running that reads from the server every so
+often and shows me my clocks. Boom.
 

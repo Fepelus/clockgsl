@@ -87,7 +87,7 @@ func GetAllAsJSON() string {
 .for clock
 "$(name)":"%s",\
 .endfor
-}`\
+"tail": "true"}`\
 .for clock
 , get$(name:neat)($(timezone)Supplier().FractionOfDayPassed())\
 .endfor

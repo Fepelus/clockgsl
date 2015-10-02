@@ -73,7 +73,7 @@
 			<test attime="23:59:59" expect="@999"/>
 		</tests>
 	</clock>
-	<clock name="hexTime" timezone="local" printf="%s_%s%s_%s">
+	<clock name="hexTime" timezone="local" printf="%02s_%s%s_%02s">
 		<outputfield name="hexhours" dayfraction="1/16" type="hexdigits"/>
 		<outputfield name="hexminutetens" dayfraction="1/256" type="hexdigits"/>
 		<outputfield name="hexminuteunits" dayfraction="1/4096" type="hexdigits"/>
@@ -124,12 +124,16 @@
 			<test attime="00:00:00" expect="Eight bells"/>
 			<test attime="00:29:59" expect="Eight bells"/>
 			<test attime="00:30:00" expect="One bell"/>
-			<test attime="18:45:00" expect="One bell"/>
+			<test attime="18:29:59" expect="Four bells"/>
+			<test attime="18:30:00" expect="One bell"/>
+			<test attime="19:59:59" expect="Three bells"/>
+			<test attime="20:00:00" expect="Eight bells"/>
 		</tests>
 	</clock>
 	<clock name="watch" timezone="local" printf="%s watch">
 		<digit name="watch" dayfraction="1/12">
-			Had to double up the elements in order to handle the dog watches
+			Had to double up the elements and halve the dayfraction
+			in order to handle the dog watches
 			<element>Middle</element><element>Middle</element><element>Morning</element>
 			<element>Morning</element><element>Forenoon</element><element>Forenoon</element>
 			<element>Afternoon</element><element>Afternoon</element><element>First dog</element>

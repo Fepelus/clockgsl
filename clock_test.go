@@ -135,7 +135,10 @@ func TestBells(t *testing.T) {
 		{ "00:00:00", "Eight bells" },
 		{ "00:29:59", "Eight bells" },
 		{ "00:30:00", "One bell" },
-		{ "18:45:00", "One bell" },
+		{ "18:29:59", "Four bells" },
+		{ "18:30:00", "One bell" },
+		{ "19:59:59", "Three bells" },
+		{ "20:00:00", "Eight bells" },
 	}
         for _, tt := range testdata {
                 fraction, err := timeToDayFraction(tt.in)

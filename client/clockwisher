@@ -1,0 +1,53 @@
+#! /usr/bin/env wish -f
+
+package require json
+
+wm         title    .  {Clocks}
+wm         geometry .  +100+100
+wm         minsize  .  1 1
+
+frame   .f -borderwidth 1
+listbox .f.list  -relief sunken 
+
+pack append .f .f.list {top fillx filly expand} 
+pack append . .f {top fillx}
+
+proc insertEmpty {} {
+    .f.list insert end ""
+}
+
+proc insertElement {clocks index} {
+    set content [dict get $clocks $index]
+    .f.list insert end " $content"
+}
+
+proc tick {} {
+    .f.list delete 0 [.f.list size]
+    set fh [open "|curl http://localhost:7799/" r]
+    while {! [eof $fh]} {
+        gets $fh line
+        set  clocks [json::json2dict $line]
+        insertElement $clocks "localTime"
+        insertElement $clocks "localDate"
+        insertEmpty
+        insertElement $clocks "utc"
+        insertElement $clocks "beatTime"
+        #insertElement $clocks "hexTime"
+        #insertElement $clocks "netTime"
+        #insertElement $clocks "metricTime"
+        insertEmpty
+        insertElement $clocks "bells"
+        insertElement $clocks "watch"
+        insertEmpty
+        #foreach item [dict keys $clocks] {
+            #set val [dict get $clocks $item]
+            #puts $item
+            ##.f.list insert end $val
+        #}
+    }
+    catch {close $fh} 
+}
+
+proc every {ms body} {eval $body; after $ms [info level 0]}
+every 290 tick 
+

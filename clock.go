@@ -111,6 +111,6 @@ func GetAllAsString() string {
 }
 
 func GetAllAsJSON() string {
-	return fmt.Sprintf(`{"localTime":"%s","localDate":"%s","utc":"%s","beatTime":"%s","hexTime":"%s","bells":"%s","watch":"%s",}`, getLocaltime(localSupplier().FractionOfDayPassed()), getLocaldate(localSupplier().FractionOfDayPassed()), getUtc(utcSupplier().FractionOfDayPassed()), getBeattime(bmtSupplier().FractionOfDayPassed()), getHextime(localSupplier().FractionOfDayPassed()), getBells(localSupplier().FractionOfDayPassed()), getWatch(localSupplier().FractionOfDayPassed()))
+	return fmt.Sprintf(`{"localTime":"%s","localDate":"%s","utc":"%s","beatTime":"%s","hexTime":"%s","bells":"%s","watch":"%s","tail": "true"}`, getLocaltime(localSupplier().FractionOfDayPassed()), getLocaldate(localSupplier().FractionOfDayPassed()), getUtc(utcSupplier().FractionOfDayPassed()), getBeattime(bmtSupplier().FractionOfDayPassed()), getHextime(localSupplier().FractionOfDayPassed()), getBells(localSupplier().FractionOfDayPassed()), getWatch(localSupplier().FractionOfDayPassed()))
 }
 
