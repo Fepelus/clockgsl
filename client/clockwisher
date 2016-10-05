@@ -34,7 +34,7 @@ proc tick {} {
         insertElement $clocks "beatTime"
         #insertElement $clocks "hexTime"
         #insertElement $clocks "netTime"
-        #insertElement $clocks "metricTime"
+        insertElement $clocks "metric"
         insertEmpty
         insertElement $clocks "bells"
         insertElement $clocks "watch"

@@ -8,10 +8,10 @@ test: clock_test.go clock.go
 %.go: model.xml modelToGo.gsl
 	gsl $<
 
-cli/cli: cli/cli.go
+cli/cli: cli/cli.go clock.go
 	pushd cli; go build; popd
 
-server/server: server/server.go
+server/server: server/server.go clock.go
 	pushd cli; go build; popd
 
 clean:

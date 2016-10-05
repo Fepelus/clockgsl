@@ -127,6 +127,27 @@ func TestHextime(t *testing.T) {
         }
 
 }
+func TestMetric(t *testing.T) {
+	testdata := []struct {
+		in string
+		out string
+	}{
+		{ "00:00:00", "00.000 LMT" },
+		{ "00:34:56", "02.425 LMT" },
+		{ "13:51:40", "57.754 LMT" },
+	}
+        for _, tt := range testdata {
+                fraction, err := timeToDayFraction(tt.in)
+				if err != nil {
+                        t.Errorf("Error: %s", err)
+				}
+                s := getMetric(fraction)
+                if s != tt.out {
+                        t.Errorf("%q => %q, want %q (fraction: %q)", tt.in, s, tt.out, fraction)
+                }
+        }
+
+}
 func TestBells(t *testing.T) {
 	testdata := []struct {
 		in string

@@ -46,6 +46,14 @@ func getHextime(fractionOfDayPassed float64) string {
 	hexseconds := getHexdigitsOutputElement(fractionOfDayPassed, 1.0 * 1/65536)
     return fmt.Sprintf("%s_%s%s_%s" , hexhours, hexminutetens, hexminuteunits, hexseconds)
 }
+func getMetric(fractionOfDayPassed float64) string {
+	decidays := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 1/10)
+	centidays := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 1/100)
+	millidays := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 1/1000)
+	quadrodays := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 1/10000)
+	quintodays := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 1/100000)
+    return fmt.Sprintf("%s%s.%s%s%s LMT" , decidays, centidays, millidays, quadrodays, quintodays)
+}
 func getBells(fractionOfDayPassed float64) string {
     bellcollection := []string{"Eight bells","One bell","Two bells","Three bells","Four bells","Five bells","Six bells","Seven bells","Eight bells","One bell","Two bells","Three bells","Four bells","Five bells","Six bells","Seven bells","Eight bells","One bell","Two bells","Three bells","Four bells","Five bells","Six bells","Seven bells","Eight bells","One bell","Two bells","Three bells","Four bells","Five bells","Six bells","Seven bells","Eight bells","One bell","Two bells","Three bells","Four bells","One bell","Two bells","Three bells","Eight bells","One bell","Two bells","Three bells","Four bells","Five bells","Six bells","Seven bells",  }
     bellidx := int(math.Mod(math.Floor((fractionOfDayPassed) / (1.0 * 1/48)),float64(len(bellcollection))))
@@ -105,12 +113,13 @@ func GetAllAsString() string {
 	out = out + fmt.Sprintln(getUtc(utcSupplier().FractionOfDayPassed()))
 	out = out + fmt.Sprintln(getBeattime(bmtSupplier().FractionOfDayPassed()))
 	out = out + fmt.Sprintln(getHextime(localSupplier().FractionOfDayPassed()))
+	out = out + fmt.Sprintln(getMetric(localSupplier().FractionOfDayPassed()))
 	out = out + fmt.Sprintln(getBells(localSupplier().FractionOfDayPassed()))
 	out = out + fmt.Sprintln(getWatch(localSupplier().FractionOfDayPassed()))
     return out
 }
 
 func GetAllAsJSON() string {
-	return fmt.Sprintf(`{"localTime":"%s","localDate":"%s","utc":"%s","beatTime":"%s","hexTime":"%s","bells":"%s","watch":"%s","tail": "true"}`, getLocaltime(localSupplier().FractionOfDayPassed()), getLocaldate(localSupplier().FractionOfDayPassed()), getUtc(utcSupplier().FractionOfDayPassed()), getBeattime(bmtSupplier().FractionOfDayPassed()), getHextime(localSupplier().FractionOfDayPassed()), getBells(localSupplier().FractionOfDayPassed()), getWatch(localSupplier().FractionOfDayPassed()))
+	return fmt.Sprintf(`{"localTime":"%s","localDate":"%s","utc":"%s","beatTime":"%s","hexTime":"%s","metric":"%s","bells":"%s","watch":"%s","tail": "true"}`, getLocaltime(localSupplier().FractionOfDayPassed()), getLocaldate(localSupplier().FractionOfDayPassed()), getUtc(utcSupplier().FractionOfDayPassed()), getBeattime(bmtSupplier().FractionOfDayPassed()), getHextime(localSupplier().FractionOfDayPassed()), getMetric(localSupplier().FractionOfDayPassed()), getBells(localSupplier().FractionOfDayPassed()), getWatch(localSupplier().FractionOfDayPassed()))
 }
 

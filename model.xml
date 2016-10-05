@@ -73,7 +73,7 @@
 			<test attime="23:59:59" expect="@999"/>
 		</tests>
 	</clock>
-	<clock name="hexTime" timezone="local" printf="%02s_%s%s_%02s">
+	<clock name="hexTime" timezone="local" printf="%s_%s%s_%s">
 		<outputfield name="hexhours" dayfraction="1/16" type="hexdigits"/>
 		<outputfield name="hexminutetens" dayfraction="1/256" type="hexdigits"/>
 		<outputfield name="hexminuteunits" dayfraction="1/4096" type="hexdigits"/>
@@ -83,6 +83,19 @@
 			<test attime="02:59:59" expect="1_FF_F"/>
 			<test attime="03:00:00" expect="2_00_0"/>
 			<test attime="23:59:59" expect="F_FF_F"/>
+		</tests>
+	</clock>
+	<clock name="metric" timezone="local" printf="%s%s.%s%s%s LMT">
+		http://zapatopi.net/metrictime
+		<outputfield name="decidays" dayfraction="1/10" type="digits"/>
+		<outputfield name="centidays" dayfraction="1/100" type="digits"/>
+		<outputfield name="millidays" dayfraction="1/1000" type="digits"/>
+		<outputfield name="quadrodays" dayfraction="1/10000" type="digits"/>
+		<outputfield name="quintodays" dayfraction="1/100000" type="digits"/>
+		<tests>
+			<test attime="00:00:00" expect="00.000 LMT"/>
+			<test attime="00:34:56" expect="02.425 LMT"/>
+			<test attime="13:51:40" expect="57.754 LMT"/>
 		</tests>
 	</clock>
 	<clock name="bells" timezone="local" printf="%s">
