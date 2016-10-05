@@ -83,15 +83,16 @@ func GetAllAsString() string {
 }
 
 func GetAllAsJSON() string {
-	return fmt.Sprintf(`{\
+    return fmt.Sprintf(
+        `{\
 .for clock
 "$(name)":"%s",\
 .endfor
-"tail": "true"}`\
+"tail": "true"}`,
 .for clock
-, get$(name:neat)($(timezone)Supplier().FractionOfDayPassed())\
+		get$(name:neat)($(timezone)Supplier().FractionOfDayPassed()),
 .endfor
-)
+   )
 }
 
 .output "clock_test.go"
