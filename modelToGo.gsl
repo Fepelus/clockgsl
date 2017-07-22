@@ -11,8 +11,19 @@ type supplier interface {
 	FractionOfDayPassed() float64
 }
 
+func floatingModulo(fractionOfDayPassed float64, resetFraction float64) float64 {
+	division := math.Floor(fractionOfDayPassed / resetFraction )
+	return (fractionOfDayPassed - (division * resetFraction))
+}
+
+
 .for clock
 func get$(name:neat)(fractionOfDayPassed float64) string {
+. if count(outputfield) > 0
+    resetFraction := 1.0 * $(resetfraction ? 1.0)
+   
+    resetFractionOfDayPassed := floatingModulo(fractionOfDayPassed, resetFraction)
+. endif
 . printvars = ""
 . for field
 . printvars = printvars + ", $(name)"
@@ -29,12 +40,13 @@ func get$(name:neat)(fractionOfDayPassed float64) string {
     $(name) := $(name)collection[$(name)idx]
 . endfor
 . for outputfield
-	$(name) := get$(type:neat)OutputElement(fractionOfDayPassed, 1.0 * $(dayfraction))
+	$(name) := get$(type:neat)OutputElement(resetFractionOfDayPassed, 1.0 * $(dayfraction))
 . printvars = printvars + ", $(name)"
 . endfor
     return fmt.Sprintf("$(printf)" $(printvars))
 }
 .endfor
+
 
 .for outputtypes
 .for type

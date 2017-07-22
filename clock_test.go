@@ -148,6 +148,51 @@ func TestMetric(t *testing.T) {
         }
 
 }
+func TestBinaryhours(t *testing.T) {
+	testdata := []struct {
+		in string
+		out string
+	}{
+		{ "00:00:00", "000000" },
+		{ "01:00:00", "000001" },
+		{ "12:00:00", "001100" },
+		{ "23:59:59", "010111" },
+	}
+        for _, tt := range testdata {
+                fraction, err := timeToDayFraction(tt.in)
+				if err != nil {
+                        t.Errorf("Error: %s", err)
+				}
+                s := getBinaryhours(fraction)
+                if s != tt.out {
+                        t.Errorf("%q => %q, want %q (fraction: %q)", tt.in, s, tt.out, fraction)
+                }
+        }
+
+}
+func TestBinarymins(t *testing.T) {
+	testdata := []struct {
+		in string
+		out string
+	}{
+		{ "00:00:00", "000000" },
+		{ "00:01:00", "000001" },
+		{ "11:59:59", "111011" },
+		{ "12:00:00", "000000" },
+		{ "23:59:59", "111011" },
+	}
+        for _, tt := range testdata {
+                fraction, err := timeToDayFraction(tt.in)
+				if err != nil {
+                        t.Errorf("Error: %s", err)
+				}
+                s := getBinarymins(fraction)
+                if s != tt.out {
+                        t.Errorf("%q => %q, want %q (fraction: %q)", tt.in, s, tt.out, fraction)
+                }
+        }
+
+}
 func TestBells(t *testing.T) {
 	testdata := []struct {
 		in string

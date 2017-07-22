@@ -9,13 +9,22 @@ type supplier interface {
 	FractionOfDayPassed() float64
 }
 
+func floatingModulo(fractionOfDayPassed float64, resetFraction float64) float64 {
+	division := math.Floor(fractionOfDayPassed / resetFraction )
+	return (fractionOfDayPassed - (division * resetFraction))
+}
+
+
 func getLocaltime(fractionOfDayPassed float64) string {
-	hourten := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 5/12)
-	hourunit := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 1/24)
-	minuteten := getSixdigitsOutputElement(fractionOfDayPassed, 1.0 * 1/144)
-	minuteunit := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 1/1440)
-	secondten := getSixdigitsOutputElement(fractionOfDayPassed, 1.0 * 1/8640)
-	secondunit := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 1/86400)
+    resetFraction := 1.0 * 1.0
+   
+    resetFractionOfDayPassed := floatingModulo(fractionOfDayPassed, resetFraction)
+	hourten := getDigitsOutputElement(resetFractionOfDayPassed, 1.0 * 5/12)
+	hourunit := getDigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/24)
+	minuteten := getSixdigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/144)
+	minuteunit := getDigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/1440)
+	secondten := getSixdigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/8640)
+	secondunit := getDigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/86400)
     return fmt.Sprintf("%s%s:%s%s:%s%s" , hourten, hourunit, minuteten, minuteunit, secondten, secondunit)
 }
 func getLocaldate(fractionOfDayPassed float64) string {
@@ -25,34 +34,69 @@ func getLocaldate(fractionOfDayPassed float64) string {
     return fmt.Sprintf("%d-%02d-%02d" , Year, Month, Day)
 }
 func getUtc(fractionOfDayPassed float64) string {
-	hourten := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 5/12)
-	hourunit := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 1/24)
-	minuteten := getSixdigitsOutputElement(fractionOfDayPassed, 1.0 * 1/144)
-	minuteunit := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 1/1440)
-	secondten := getSixdigitsOutputElement(fractionOfDayPassed, 1.0 * 1/8640)
-	secondunit := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 1/86400)
+    resetFraction := 1.0 * 1.0
+   
+    resetFractionOfDayPassed := floatingModulo(fractionOfDayPassed, resetFraction)
+	hourten := getDigitsOutputElement(resetFractionOfDayPassed, 1.0 * 5/12)
+	hourunit := getDigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/24)
+	minuteten := getSixdigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/144)
+	minuteunit := getDigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/1440)
+	secondten := getSixdigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/8640)
+	secondunit := getDigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/86400)
     return fmt.Sprintf("%s%s:%s%s:%s%s UT" , hourten, hourunit, minuteten, minuteunit, secondten, secondunit)
 }
 func getBeattime(fractionOfDayPassed float64) string {
-	hundreds := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 1/10)
-	tens := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 1/100)
-	units := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 1/1000)
+    resetFraction := 1.0 * 1.0
+   
+    resetFractionOfDayPassed := floatingModulo(fractionOfDayPassed, resetFraction)
+	hundreds := getDigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/10)
+	tens := getDigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/100)
+	units := getDigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/1000)
     return fmt.Sprintf("@%s%s%s" , hundreds, tens, units)
 }
 func getHextime(fractionOfDayPassed float64) string {
-	hexhours := getHexdigitsOutputElement(fractionOfDayPassed, 1.0 * 1/16)
-	hexminutetens := getHexdigitsOutputElement(fractionOfDayPassed, 1.0 * 1/256)
-	hexminuteunits := getHexdigitsOutputElement(fractionOfDayPassed, 1.0 * 1/4096)
-	hexseconds := getHexdigitsOutputElement(fractionOfDayPassed, 1.0 * 1/65536)
+    resetFraction := 1.0 * 1.0
+   
+    resetFractionOfDayPassed := floatingModulo(fractionOfDayPassed, resetFraction)
+	hexhours := getHexdigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/16)
+	hexminutetens := getHexdigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/256)
+	hexminuteunits := getHexdigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/4096)
+	hexseconds := getHexdigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/65536)
     return fmt.Sprintf("%s_%s%s_%s" , hexhours, hexminutetens, hexminuteunits, hexseconds)
 }
 func getMetric(fractionOfDayPassed float64) string {
-	decidays := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 1/10)
-	centidays := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 1/100)
-	millidays := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 1/1000)
-	quadrodays := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 1/10000)
-	quintodays := getDigitsOutputElement(fractionOfDayPassed, 1.0 * 1/100000)
-    return fmt.Sprintf("%s%s.%s%s%s LMT" , decidays, centidays, millidays, quadrodays, quintodays)
+    resetFraction := 1.0 * 1.0
+   
+    resetFractionOfDayPassed := floatingModulo(fractionOfDayPassed, resetFraction)
+	decidays := getDigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/10)
+	centidays := getDigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/100)
+	millidays := getDigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/1000)
+	hectomicrodays := getDigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/10000)
+	dekamicrodays := getDigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/100000)
+    return fmt.Sprintf("%s%s.%s%s%s LMT" , decidays, centidays, millidays, hectomicrodays, dekamicrodays)
+}
+func getBinaryhours(fractionOfDayPassed float64) string {
+    resetFraction := 1.0 * 1.0
+   
+    resetFractionOfDayPassed := floatingModulo(fractionOfDayPassed, resetFraction)
+	bhsixt := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 2/3)
+	bheight := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/3)
+	bhfour := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/6)
+	bhtwo := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/12)
+	bhunit := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/24)
+    return fmt.Sprintf("0%s%s%s%s%s" , bhsixt, bheight, bhfour, bhtwo, bhunit)
+}
+func getBinarymins(fractionOfDayPassed float64) string {
+    resetFraction := 1.0 * 1/24
+   
+    resetFractionOfDayPassed := floatingModulo(fractionOfDayPassed, resetFraction)
+	bhthirt := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/45)
+	bhsixt := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/90)
+	bheight := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/180)
+	bhfour := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/360)
+	bhtwo := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/720)
+	bhunit := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/1440)
+    return fmt.Sprintf("%s%s%s%s%s%s" , bhthirt, bhsixt, bheight, bhfour, bhtwo, bhunit)
 }
 func getBells(fractionOfDayPassed float64) string {
     bellcollection := []string{"Eight bells","One bell","Two bells","Three bells","Four bells","Five bells","Six bells","Seven bells","Eight bells","One bell","Two bells","Three bells","Four bells","Five bells","Six bells","Seven bells","Eight bells","One bell","Two bells","Three bells","Four bells","Five bells","Six bells","Seven bells","Eight bells","One bell","Two bells","Three bells","Four bells","Five bells","Six bells","Seven bells","Eight bells","One bell","Two bells","Three bells","Four bells","One bell","Two bells","Three bells","Eight bells","One bell","Two bells","Three bells","Four bells","Five bells","Six bells","Seven bells",  }
@@ -67,6 +111,7 @@ func getWatch(fractionOfDayPassed float64) string {
     return fmt.Sprintf("%s watch" , watch)
 }
 
+
 func getDigitsOutputElement(fractionOfDayPassed float64, dayFraction float64) string {
     collection := []string{"0","1","2","3","4","5","6","7","8","9",}
     idx := int(math.Mod(math.Floor((fractionOfDayPassed) / dayFraction),float64(len(collection))))
@@ -79,6 +124,11 @@ func getSixdigitsOutputElement(fractionOfDayPassed float64, dayFraction float64)
 }
 func getHexdigitsOutputElement(fractionOfDayPassed float64, dayFraction float64) string {
     collection := []string{"0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F",}
+    idx := int(math.Mod(math.Floor((fractionOfDayPassed) / dayFraction),float64(len(collection))))
+    return collection[idx]
+}
+func getBinarydigitsOutputElement(fractionOfDayPassed float64, dayFraction float64) string {
+    collection := []string{"0","1",}
     idx := int(math.Mod(math.Floor((fractionOfDayPassed) / dayFraction),float64(len(collection))))
     return collection[idx]
 }
@@ -114,6 +164,8 @@ func GetAllAsString() string {
 	out = out + fmt.Sprintln(getBeattime(bmtSupplier().FractionOfDayPassed()))
 	out = out + fmt.Sprintln(getHextime(localSupplier().FractionOfDayPassed()))
 	out = out + fmt.Sprintln(getMetric(localSupplier().FractionOfDayPassed()))
+	out = out + fmt.Sprintln(getBinaryhours(localSupplier().FractionOfDayPassed()))
+	out = out + fmt.Sprintln(getBinarymins(localSupplier().FractionOfDayPassed()))
 	out = out + fmt.Sprintln(getBells(localSupplier().FractionOfDayPassed()))
 	out = out + fmt.Sprintln(getWatch(localSupplier().FractionOfDayPassed()))
     return out
@@ -121,13 +173,15 @@ func GetAllAsString() string {
 
 func GetAllAsJSON() string {
     return fmt.Sprintf(
-        `{"localTime":"%s","localDate":"%s","utc":"%s","beatTime":"%s","hexTime":"%s","metric":"%s","bells":"%s","watch":"%s","tail": "true"}`,
+        `{"localTime":"%s","localDate":"%s","utc":"%s","beatTime":"%s","hexTime":"%s","metric":"%s","binaryhours":"%s","binarymins":"%s","bells":"%s","watch":"%s","tail": "true"}`,
 		getLocaltime(localSupplier().FractionOfDayPassed()),
 		getLocaldate(localSupplier().FractionOfDayPassed()),
 		getUtc(utcSupplier().FractionOfDayPassed()),
 		getBeattime(bmtSupplier().FractionOfDayPassed()),
 		getHextime(localSupplier().FractionOfDayPassed()),
 		getMetric(localSupplier().FractionOfDayPassed()),
+		getBinaryhours(localSupplier().FractionOfDayPassed()),
+		getBinarymins(localSupplier().FractionOfDayPassed()),
 		getBells(localSupplier().FractionOfDayPassed()),
 		getWatch(localSupplier().FractionOfDayPassed()),
    )
