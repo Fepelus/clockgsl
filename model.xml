@@ -55,6 +55,11 @@
         <field name="Month"/>
         <field name="Day"/>
     </clock>
+    <clock name="holoceneDate" timezone="local" printf="1%d-%02d-%02d">
+        <field name="Year"/>
+        <field name="Month"/>
+        <field name="Day"/>
+    </clock>
     <clock name="utc" timezone="utc" printf="%s%s:%s%s:%s%s UT">
         <outputfield name="hourten" dayfraction="5/12" type="digits"/>
         <outputfield name="hourunit" dayfraction="1/24" type="digits"/>
@@ -68,6 +73,7 @@
         </tests>
     </clock>
     <clock name="beatTime" timezone="bmt" printf="@%s%s%s">
+		https://www.swatch.com/en_au/internet-time/
         <outputfield name="hundreds" dayfraction="1/10" type="digits"/>
         <outputfield name="tens" dayfraction="1/100" type="digits"/>
         <outputfield name="units" dayfraction="1/1000" type="digits"/>
@@ -77,14 +83,18 @@
         </tests>
     </clock>
     <clock name="hexTime" timezone="local" printf="%s_%s%s_%s">
+		http://www.intuitor.com/hex/hexclock.html
         <outputfield name="hexhours" dayfraction="1/16" type="hexdigits"/>
-        <outputfield name="hexminutetens" dayfraction="1/256" type="hexdigits"/>
-        <outputfield name="hexminuteunits" dayfraction="1/4096" type="hexdigits"/>
+        <outputfield name="hexmaximes" dayfraction="1/256" type="hexdigits"/>
+        <outputfield name="hexminutes" dayfraction="1/4096" type="hexdigits"/>
         <outputfield name="hexseconds" dayfraction="1/65536" type="hexdigits"/>
         <tests>
             <test attime="00:00:00" expect="0_00_0"/>
             <test attime="02:59:59" expect="1_FF_F"/>
             <test attime="03:00:00" expect="2_00_0"/>
+            <test attime="09:30:00" expect="6_55_5"/>
+            <test attime="14:00:00" expect="9_55_5"/>
+            <test attime="17:30:00" expect="B_AA_A"/>
             <test attime="23:59:59" expect="F_FF_F"/>
         </tests>
     </clock>
@@ -118,15 +128,40 @@
     </clock>
 
 	<clock name="binarymins" timezone="local" printf="%s%s%s%s%s%s" resetfraction="1/24">
-        <outputfield name="bhthirt" dayfraction="1/45" type="binarydigits"/>
-        <outputfield name="bhsixt" dayfraction="1/90" type="binarydigits"/>
-        <outputfield name="bheight" dayfraction="1/180" type="binarydigits"/>
-        <outputfield name="bhfour" dayfraction="1/360" type="binarydigits"/>
-        <outputfield name="bhtwo" dayfraction="1/720" type="binarydigits"/>
-        <outputfield name="bhunit" dayfraction="1/1440" type="binarydigits"/>
+        <outputfield name="bmthirt" dayfraction="1/45" type="binarydigits"/>
+        <outputfield name="bmsixt" dayfraction="1/90" type="binarydigits"/>
+        <outputfield name="bmeight" dayfraction="1/180" type="binarydigits"/>
+        <outputfield name="bmfour" dayfraction="1/360" type="binarydigits"/>
+        <outputfield name="bmtwo" dayfraction="1/720" type="binarydigits"/>
+        <outputfield name="bmunit" dayfraction="1/1440" type="binarydigits"/>
         <tests>
             <test attime="00:00:00" expect="000000"/>
             <test attime="00:01:00" expect="000001"/>
+            <test attime="11:59:59" expect="111011"/>
+            <test attime="12:00:00" expect="000000"/>
+            <test attime="23:59:59" expect="111011"/>
+        </tests>
+    </clock>
+
+	<clock name="binarysecs" timezone="local" printf="%s%s%s%s%s%s" resetfraction="1/1440">
+        <outputfield name="bsthirt" dayfraction="1/2700" type="binarydigits"/>
+        <outputfield name="bssixt" dayfraction="1/5400" type="binarydigits"/>
+        <outputfield name="bseight" dayfraction="1/10800" type="binarydigits"/>
+        <outputfield name="bsfour" dayfraction="1/21600" type="binarydigits"/>
+        <outputfield name="bstwo" dayfraction="1/43200" type="binarydigits"/>
+        <outputfield name="bsunit" dayfraction="1/86401" type="binarydigits"/>
+        <tests>
+            <test attime="00:00:00" expect="000000"/>
+            <test attime="00:00:01" expect="000001"/>
+            <test attime="00:00:31" expect="011111"/>
+            <test attime="00:00:32" expect="100000"/>
+            <test attime="00:00:47" expect="101111"/>
+            <test attime="00:00:48" expect="110000"/>
+            <test attime="00:00:02" expect="000010"/>
+            <test attime="00:00:59" expect="111011"/>
+            <test attime="00:01:00" expect="000000"/>
+            <test attime="00:59:59" expect="111011"/>
+            <test attime="05:59:59" expect="111011"/>
             <test attime="11:59:59" expect="111011"/>
             <test attime="12:00:00" expect="000000"/>
             <test attime="23:59:59" expect="111011"/>

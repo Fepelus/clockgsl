@@ -33,6 +33,12 @@ func getLocaldate(fractionOfDayPassed float64) string {
     Day := time.Now().Day()
     return fmt.Sprintf("%d-%02d-%02d" , Year, Month, Day)
 }
+func getHolocenedate(fractionOfDayPassed float64) string {
+    Year := time.Now().Year()
+    Month := time.Now().Month()
+    Day := time.Now().Day()
+    return fmt.Sprintf("1%d-%02d-%02d" , Year, Month, Day)
+}
 func getUtc(fractionOfDayPassed float64) string {
     resetFraction := 1.0 * 1.0
    
@@ -59,10 +65,10 @@ func getHextime(fractionOfDayPassed float64) string {
    
     resetFractionOfDayPassed := floatingModulo(fractionOfDayPassed, resetFraction)
 	hexhours := getHexdigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/16)
-	hexminutetens := getHexdigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/256)
-	hexminuteunits := getHexdigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/4096)
+	hexmaximes := getHexdigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/256)
+	hexminutes := getHexdigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/4096)
 	hexseconds := getHexdigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/65536)
-    return fmt.Sprintf("%s_%s%s_%s" , hexhours, hexminutetens, hexminuteunits, hexseconds)
+    return fmt.Sprintf("%s_%s%s_%s" , hexhours, hexmaximes, hexminutes, hexseconds)
 }
 func getMetric(fractionOfDayPassed float64) string {
     resetFraction := 1.0 * 1.0
@@ -90,13 +96,25 @@ func getBinarymins(fractionOfDayPassed float64) string {
     resetFraction := 1.0 * 1/24
    
     resetFractionOfDayPassed := floatingModulo(fractionOfDayPassed, resetFraction)
-	bhthirt := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/45)
-	bhsixt := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/90)
-	bheight := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/180)
-	bhfour := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/360)
-	bhtwo := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/720)
-	bhunit := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/1440)
-    return fmt.Sprintf("%s%s%s%s%s%s" , bhthirt, bhsixt, bheight, bhfour, bhtwo, bhunit)
+	bmthirt := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/45)
+	bmsixt := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/90)
+	bmeight := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/180)
+	bmfour := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/360)
+	bmtwo := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/720)
+	bmunit := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/1440)
+    return fmt.Sprintf("%s%s%s%s%s%s" , bmthirt, bmsixt, bmeight, bmfour, bmtwo, bmunit)
+}
+func getBinarysecs(fractionOfDayPassed float64) string {
+    resetFraction := 1.0 * 1/1440
+   
+    resetFractionOfDayPassed := floatingModulo(fractionOfDayPassed, resetFraction)
+	bsthirt := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/2700)
+	bssixt := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/5400)
+	bseight := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/10800)
+	bsfour := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/21600)
+	bstwo := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/43200)
+	bsunit := getBinarydigitsOutputElement(resetFractionOfDayPassed, 1.0 * 1/86401)
+    return fmt.Sprintf("%s%s%s%s%s%s" , bsthirt, bssixt, bseight, bsfour, bstwo, bsunit)
 }
 func getBells(fractionOfDayPassed float64) string {
     bellcollection := []string{"Eight bells","One bell","Two bells","Three bells","Four bells","Five bells","Six bells","Seven bells","Eight bells","One bell","Two bells","Three bells","Four bells","Five bells","Six bells","Seven bells","Eight bells","One bell","Two bells","Three bells","Four bells","Five bells","Six bells","Seven bells","Eight bells","One bell","Two bells","Three bells","Four bells","Five bells","Six bells","Seven bells","Eight bells","One bell","Two bells","Three bells","Four bells","One bell","Two bells","Three bells","Eight bells","One bell","Two bells","Three bells","Four bells","Five bells","Six bells","Seven bells",  }
@@ -160,12 +178,14 @@ func GetAllAsString() string {
     out := ""
 	out = out + fmt.Sprintln(getLocaltime(localSupplier().FractionOfDayPassed()))
 	out = out + fmt.Sprintln(getLocaldate(localSupplier().FractionOfDayPassed()))
+	out = out + fmt.Sprintln(getHolocenedate(localSupplier().FractionOfDayPassed()))
 	out = out + fmt.Sprintln(getUtc(utcSupplier().FractionOfDayPassed()))
 	out = out + fmt.Sprintln(getBeattime(bmtSupplier().FractionOfDayPassed()))
 	out = out + fmt.Sprintln(getHextime(localSupplier().FractionOfDayPassed()))
 	out = out + fmt.Sprintln(getMetric(localSupplier().FractionOfDayPassed()))
 	out = out + fmt.Sprintln(getBinaryhours(localSupplier().FractionOfDayPassed()))
 	out = out + fmt.Sprintln(getBinarymins(localSupplier().FractionOfDayPassed()))
+	out = out + fmt.Sprintln(getBinarysecs(localSupplier().FractionOfDayPassed()))
 	out = out + fmt.Sprintln(getBells(localSupplier().FractionOfDayPassed()))
 	out = out + fmt.Sprintln(getWatch(localSupplier().FractionOfDayPassed()))
     return out
@@ -173,15 +193,17 @@ func GetAllAsString() string {
 
 func GetAllAsJSON() string {
     return fmt.Sprintf(
-        `{"localTime":"%s","localDate":"%s","utc":"%s","beatTime":"%s","hexTime":"%s","metric":"%s","binaryhours":"%s","binarymins":"%s","bells":"%s","watch":"%s","tail": "true"}`,
+        `{"localTime":"%s","localDate":"%s","holoceneDate":"%s","utc":"%s","beatTime":"%s","hexTime":"%s","metric":"%s","binaryhours":"%s","binarymins":"%s","binarysecs":"%s","bells":"%s","watch":"%s","tail": "true"}`,
 		getLocaltime(localSupplier().FractionOfDayPassed()),
 		getLocaldate(localSupplier().FractionOfDayPassed()),
+		getHolocenedate(localSupplier().FractionOfDayPassed()),
 		getUtc(utcSupplier().FractionOfDayPassed()),
 		getBeattime(bmtSupplier().FractionOfDayPassed()),
 		getHextime(localSupplier().FractionOfDayPassed()),
 		getMetric(localSupplier().FractionOfDayPassed()),
 		getBinaryhours(localSupplier().FractionOfDayPassed()),
 		getBinarymins(localSupplier().FractionOfDayPassed()),
+		getBinarysecs(localSupplier().FractionOfDayPassed()),
 		getBells(localSupplier().FractionOfDayPassed()),
 		getWatch(localSupplier().FractionOfDayPassed()),
    )

@@ -65,6 +65,24 @@ func TestLocaldate(t *testing.T) {
         }
 
 }
+func TestHolocenedate(t *testing.T) {
+	testdata := []struct {
+		in string
+		out string
+	}{
+	}
+        for _, tt := range testdata {
+                fraction, err := timeToDayFraction(tt.in)
+				if err != nil {
+                        t.Errorf("Error: %s", err)
+				}
+                s := getHolocenedate(fraction)
+                if s != tt.out {
+                        t.Errorf("%q => %q, want %q (fraction: %q)", tt.in, s, tt.out, fraction)
+                }
+        }
+
+}
 func TestUtc(t *testing.T) {
 	testdata := []struct {
 		in string
@@ -113,6 +131,9 @@ func TestHextime(t *testing.T) {
 		{ "00:00:00", "0_00_0" },
 		{ "02:59:59", "1_FF_F" },
 		{ "03:00:00", "2_00_0" },
+		{ "09:30:00", "6_55_5" },
+		{ "14:00:00", "9_55_5" },
+		{ "17:30:00", "B_AA_A" },
 		{ "23:59:59", "F_FF_F" },
 	}
         for _, tt := range testdata {
@@ -187,6 +208,38 @@ func TestBinarymins(t *testing.T) {
                         t.Errorf("Error: %s", err)
 				}
                 s := getBinarymins(fraction)
+                if s != tt.out {
+                        t.Errorf("%q => %q, want %q (fraction: %q)", tt.in, s, tt.out, fraction)
+                }
+        }
+
+}
+func TestBinarysecs(t *testing.T) {
+	testdata := []struct {
+		in string
+		out string
+	}{
+		{ "00:00:00", "000000" },
+		{ "00:00:01", "000001" },
+		{ "00:00:31", "011111" },
+		{ "00:00:32", "100000" },
+		{ "00:00:47", "101111" },
+		{ "00:00:48", "110000" },
+		{ "00:00:02", "000010" },
+		{ "00:00:59", "111011" },
+		{ "00:01:00", "000000" },
+		{ "00:59:59", "111011" },
+		{ "05:59:59", "111011" },
+		{ "11:59:59", "111011" },
+		{ "12:00:00", "000000" },
+		{ "23:59:59", "111011" },
+	}
+        for _, tt := range testdata {
+                fraction, err := timeToDayFraction(tt.in)
+				if err != nil {
+                        t.Errorf("Error: %s", err)
+				}
+                s := getBinarysecs(fraction)
                 if s != tt.out {
                         t.Errorf("%q => %q, want %q (fraction: %q)", tt.in, s, tt.out, fraction)
                 }

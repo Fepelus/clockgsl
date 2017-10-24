@@ -25,10 +25,11 @@ proc packWidgets {} {
 }
 
 proc configureFonts {} {
-    font create TriplicateBold -family "Triplicate T4" -size 13 -weight bold
-    font create Triplicate -family "Triplicate T4" -size 12 -weight normal
-    .f.text tag configure highlightline -font TriplicateBold
-    .f.text tag configure line -font Triplicate
+	set family "Essential Pragmata Pro"
+    font create BoldFont -family $family -size 13 -weight bold
+    font create NormalFont -family $family -size 12 -weight normal
+    .f.text tag configure highlightline -font BoldFont
+    .f.text tag configure line -font NormalFont
 }
 
 proc startloop {} {
